@@ -7102,7 +7102,7 @@
                 updateStatsUI();
             } catch(e) { console.log("Init stats skipped"); }
             
-            if(bgmPlayer) bgmPlayer.volume = 0.12;
+            if(bgmPlayer) bgmPlayer.volume = 0.11;
         };
 
         // Loading 动画
@@ -7433,7 +7433,7 @@ const rarityValue = {
             var audio = document.getElementById('ui-click-sound');
             if (audio) {
                 audio.currentTime = 0; // 关键：每次播放前把进度条归零，这样连点时声音不会卡壳
-                audio.volume = 0.45;    // 音量设置 (0.0 - 1.0)，建议不要太吵，0.4 比较合适
+                audio.volume = 0.5;    // 音量设置 (0.0 - 1.0)，建议不要太吵，0.4 比较合适
                 
                 // 尝试播放 (捕获错误防止报错)
                 var playPromise = audio.play();
