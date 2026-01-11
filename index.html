@@ -27,7 +27,7 @@
         <div class="main-title">TANKI WIKI CN</div>
         <div class="subtitle">3D坦克 中文维基</div>
         <button class="enter-btn" onclick="switchScreen('hub')">ENTER</button>
-        <div style="position:absolute; bottom:40px; color:rgba(255,255,255,0.5);">Ver 1.26110 // By 千早ですわ</div>
+        <div style="position:absolute; bottom:40px; color:rgba(255,255,255,0.5);">Ver 1.26111 // By 千早ですわ</div>
     </div>
 
 
@@ -5754,9 +5754,35 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </main>       
+    </div>
+    <div id="hub-announcement" class="modal-overlay hidden">
+        <div class="modal-box">
+            <div class="modal-header">
+                <span class="modal-title">SYSTEM MESSAGE // 站内广播</span>
+                <button class="modal-close" onclick="closeAnnouncement()">×</button>
+            </div>
+            <div class="modal-content">
+                <h3 style="color:#f7ff00; margin-top:0; text-shadow: 0 0 10px rgba(247, 255, 0, 0.3);">
+                    WELCOME TO TANKI WIKI v1.26111
+                </h3>
+                <p style="color:#ddd;"></p> 本次更新包含以下内容：</p>
+                <ul style="text-align:left; color:#aaa; font-size: 13px; line-height: 1.6; padding-left: 20px;">
+                    <li><span style="color:#00f2ff;">[NEW]</span> 新增 <b>无</b></li>
+                    <li><span style="color:#00f2ff;">[FIX]</span> 优化了 <b>转化中文翻译</b></li>
+                    <li><span style="color:#ff0055;">[HOT]</span> 无</li>
+                </ul>
+                
+                <div style="margin-top:25px; padding:10px; background:rgba(0, 242, 255, 0.05); border:1px dashed #333; font-size:12px; color:#666; font-family:monospace;">
+                    > TERMINAL_ID: 1226<br>
+                    > STATUS: ONLINE
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="confirm-btn" onclick="closeAnnouncement()">ACKNOWLEDGE // 收到</button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -7140,14 +7166,18 @@
                 document.getElementById('screen-cover').classList.add('hidden');
                 document.getElementById('screen-hub').classList.add('hidden');
                 document.getElementById('screen-detail').classList.add('hidden');
-
+                document.querySelectorAll('[id^="screen-"]').forEach(el => el.classList.add('hidden'));
+                document.getElementById('screen-' + screenName).classList.remove('hidden');
+                if (screenName === 'hub') {
+                    checkAndShowAnnouncement();
+                }
                 var target = document.getElementById('screen-' + screenName);
                 if(target) target.classList.remove('hidden');
                 window.scrollTo(0, 0);
                 
                 if(screenName === 'containers') updateStatsUI();
             });
-        }
+        } 
 
         // 开箱与保底逻辑
         function rollOneItem(forcedRarity = null) {
@@ -7463,6 +7493,34 @@ const rarityValue = {
                 playClickSound();
             }
         });
+        // 全局变量：防止重复弹出
+var hasShownAnnouncement = false; 
+
+// 显示公告
+function checkAndShowAnnouncement() {
+    // 只有在第一次进入，且当前不在 Loading 状态时显示
+    if (!hasShownAnnouncement) {
+        setTimeout(function() {
+            var modal = document.getElementById('hub-announcement');
+            if(modal) {
+                modal.classList.remove('hidden');
+                // 播放一个音效提示 (复用你现有的点击音效，或者换一个)
+                playClickSound(); 
+            }
+        }, 700); // 延迟 ms，等待 Loading 动画完全消失后再弹出来，体验更顺滑
+        
+        hasShownAnnouncement = true; // 标记为已显示
+    }
+}
+
+// 关闭公告
+function closeAnnouncement() {
+    var modal = document.getElementById('hub-announcement');
+    if(modal) {
+        modal.classList.add('hidden');
+        playClickSound(); // 关闭时也响一声，反馈感更好
+    }
+}
     </script>
 </body>
 </html>
